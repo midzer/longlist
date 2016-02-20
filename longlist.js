@@ -1,15 +1,14 @@
-// longtable 2.0 - a minimalist javascript table pager
+// longlist 2.0 - a minimalist javascript list pager
 
 // Copyright 2011, 2012, 2013, 2014, 2015 Chris Forno
+// Copyright 2016 Dennis Rohner
 // Licensed under the MIT license (http://www.opensource.org/licenses/mit-license.php).
 
 // Unsupported browsers:
 // Internet Explorer <= 8
 
 // Assumptions:
-// * The table has a single <tbody>.
-// * All rows have the same number of columns (more specifically, the
-//   first row has the max number of columns of all rows).
+// * The list has a single <ul>.
 
 (function () {
 
@@ -25,26 +24,18 @@
     element.dispatchEvent(event);
   }
 
-  window.longtable = function (table, options) {
-    if (table.tBodies.length === 0) throw new Error('longtable: Missing table <tbody>.');
+  window.longlist = function (parent, list, options) {
+    if (list.children.length === 0) throw new Error('longlist: Missing list <tbody>.');
 
-    // How many rows per page should we display?
+    // How many items per page should we display?
     var perPage = options !== undefined && 'perPage' in options ? options.perPage : 10;
     // Which page should we start on?
     var startPage = options !== undefined && 'startPage' in options ? options.startPage : 1;
     // What's the maximum number of on either side of the current page?
     var maxLinks = options !== undefined && 'maxLinks' in options ? options.maxLinks : 9;
-
     var currentPage = null;
-    var rows = table.tBodies[0].rows;
-    var nPages = Math.max(1, Math.ceil(rows.length / perPage));
-    // Determine the number of columns in the table.
-    var nCols = 0;
-    if (rows.length > 0) {
-      for (var i = 0; i < rows[0].cells.length; i++) {
-        nCols += rows[0].cells[i].colSpan;
-      }
-    }
+    var items = list.children;
+    var nPages = Math.max(1, Math.ceil(items.length / perPage));
 
     var prev = document.createElement('a');
     prev.className = 'page prev';
@@ -69,10 +60,8 @@
       links.push(link);
     }
 
-    var controls = document.createElement('th');
-    controls.colSpan = nCols;
-    controls.className = 'paging-controls';    
-    // <prev  1 ... 3 4 5 6 7 ... 9  next>
+    var controls = document.createElement('div');
+    controls.className = 'paging-controls';
     controls.appendChild(prev);
     controls.appendChild(links[0]);
     controls.appendChild(leftElipsis);
@@ -83,11 +72,11 @@
     }
     controls.appendChild(rightElipsis);
     controls.appendChild(links[links.length - 1]);
-    controls.appendChild(next);    
-    table.createTFoot().insertRow().appendChild(controls);
+    controls.appendChild(next);
+    parent.appendChild(controls);
 
-    table.gotoPage = function (n) {
-      if (n < 1 || n > nPages) throw new RangeError('longtable: gotoPage number must be between 1 and ' + nPages);
+    list.gotoPage = function (n) {
+      if (n < 1 || n > nPages) throw new RangeError('longlist: gotoPage number must be between 1 and ' + nPages);
 
       // Hide or show the previous/next controls if we're moving to the first/last page.
       prev.style.visibility = n === 1 ? 'hidden' : '';
@@ -114,39 +103,38 @@
       leftElipsis.style.display = n > nLinksLeft + 1 ? '' : 'none';
       rightElipsis.style.display = n < nPages - nLinksRight ? '' : 'none';
       
-      if (currentPage !== null) { // Hide currently displayed rows.
-        for (var i = (currentPage - 1) * perPage; i < Math.min(currentPage * perPage, rows.length); i++) {
-          rows[i].style.display = 'none';
+      if (currentPage !== null) { // Hide currently displayed items.
+        for (var i = (currentPage - 1) * perPage; i < Math.min(currentPage * perPage, items.length); i++) {
+          items[i].style.display = 'none';
         }
-      } else { // Hide all rows
-        for (var i = 0; i < rows.length; i++) {
-          rows[i].style.display = 'none';
+      } else { // Hide all items
+        for (var i = 0; i < items.length; i++) {
+          items[i].style.display = 'none';
         }
       }
-      // Display new rows.
-      for (var i = (n - 1) * perPage; i < Math.min(n * perPage, rows.length); i++) {
-        rows[i].style.display = '';
+      // Display new items.
+      for (var i = (n - 1) * perPage; i < Math.min(n * perPage, items.length); i++) {
+        items[i].style.display = '';
       }
 
       currentPage = n;
 
-      customEvent('longtable.pageChange', table, {page: n});      
+      customEvent('longlist.pageChange', list, {page: n});      
     };
 
     controls.addEventListener('click', function (event) {
       if (event.target.tagName === 'A') {
         event.preventDefault();
         if (event.target.className == 'page prev') {
-          table.gotoPage(currentPage - 1);
+          list.gotoPage(currentPage - 1);
         } else if (event.target.className == 'page next') {
-          table.gotoPage(currentPage + 1);
+          list.gotoPage(currentPage + 1);
         } else {
-          table.gotoPage(parseInt(event.target.textContent, 10));
+          list.gotoPage(parseInt(event.target.textContent, 10));
         }
       }
     });
 
-    table.gotoPage(startPage);
+    list.gotoPage(startPage);
   };
-
 })();
