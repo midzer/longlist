@@ -25,7 +25,7 @@
   }
 
   window.longlist = function (parent, list, options) {
-    if (list.children.length === 0) throw new Error('longlist: Missing list <tbody>.');
+    if (list.children.length === 0) throw new Error('longlist: Missing list items');
 
     // How many items per page should we display?
     var perPage = options !== undefined && 'perPage' in options ? options.perPage : 10;
