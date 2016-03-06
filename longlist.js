@@ -24,7 +24,7 @@
     element.dispatchEvent(event);
   }
 
-  window.longlist = function (parent, list, options) {
+  window.longlist = function (list, options) {
     if (list.children.length === 0) throw new Error('longlist: Missing list items');
 
     // How many items per page should we display?
@@ -35,7 +35,8 @@
     var maxLinks = options !== undefined && 'maxLinks' in options ? options.maxLinks : 9;
     var currentPage = null;
     var items = list.children;
-    var nPages = Math.max(1, Math.ceil(items.length / perPage));
+    var len = items.length;
+    var nPages = Math.max(1, Math.ceil(len / perPage));
 
     var prev = document.createElement('a');
     prev.className = 'page prev';
@@ -60,7 +61,7 @@
       links.push(link);
     }
 
-    var controls = document.createElement('div');
+    var controls = document.createElement('li');
     controls.className = 'paging-controls';
     controls.appendChild(prev);
     controls.appendChild(links[0]);
@@ -73,7 +74,6 @@
     controls.appendChild(rightElipsis);
     controls.appendChild(links[links.length - 1]);
     controls.appendChild(next);
-    parent.appendChild(controls);
 
     list.gotoPage = function (n) {
       if (n < 1 || n > nPages) throw new RangeError('longlist: gotoPage number must be between 1 and ' + nPages);
@@ -102,20 +102,24 @@
       // Hide or show elipses based on how far away we are from the ends.
       leftElipsis.style.display = n > nLinksLeft + 1 ? '' : 'none';
       rightElipsis.style.display = n < nPages - nLinksRight ? '' : 'none';
-      
+
+      var index = Math.min(currentPage * perPage, len);
       if (currentPage !== null) { // Hide currently displayed items.
-        for (var i = (currentPage - 1) * perPage; i < Math.min(currentPage * perPage, items.length); i++) {
+        for (var i = (currentPage - 1) * perPage; i < index; i++) {
           items[i].style.display = 'none';
         }
+        list.removeChild(list.children[index]);
       } else { // Hide all items
-        for (var i = 0; i < items.length; i++) {
+        for (var i = 0; i < len; i++) {
           items[i].style.display = 'none';
         }
       }
       // Display new items.
-      for (var i = (n - 1) * perPage; i < Math.min(n * perPage, items.length); i++) {
+      index = Math.min(n * perPage, len);
+      for (var i = (n - 1) * perPage; i < index; i++) {
         items[i].style.display = '';
       }
+      list.insertBefore(controls, list.children[index]);
 
       currentPage = n;
 

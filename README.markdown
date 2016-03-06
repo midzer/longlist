@@ -7,15 +7,14 @@ Demo at http://www.minjs.com/#longtable
 
 * paging
 * minimal code
-* controls rendered outside the list (currently in a `<div>`)
+* controls rendered inside the list dynamically (in a `<li>`)
 * no library dependencies
 
 ## How to Use
 
 ```JavaScript
-var parent = document.getElementById('yourParent');
 var yourList = document.getElementById('yourList');
-longlist(parent, yourList);
+longlist(yourList);
 ```
 
 ## Options
@@ -29,7 +28,7 @@ longlist(parent, yourList);
 Longlist will display fewer than `maxPageLinks` page navigation links if there are fewer pages. For best results, use an odd numbered `maxPageLinks` greater than equal to 3.
 
 ```JavaScript
-longlist(parent, yourList, {perPage: 20, maxPageLinks: 7});
+longlist(yourList, {perPage: 20, maxPageLinks: 7});
 ```
 
 ## Functions
