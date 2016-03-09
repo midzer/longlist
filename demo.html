@@ -1,21 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>longtable Demo</title>
+  <title>longlist Demo</title>
   <style type="text/css">
-table {
-  border-collapse: collapse;
-}
-
-th, td {
-  text-align: right;
-  border: 1px solid black;
-  padding-left: 0.25em;
-  padding-right: 0.25em;
-}
-
 .paging-controls {
   text-align: center;
+  list-style-type: none;
 }
 
 .paging-controls a {
@@ -48,35 +38,17 @@ th, td {
   </style>
 </head>
 <body>
-  <script src="longtable.js"></script>
+  <script src="longlist.js"></script>
   <script type="text/javascript">
-// Build a random table.
-var columns = 2 + Math.floor(Math.random() * 4);
-var rows = 30 + Math.floor(Math.random() * 140);
-var table = document.createElement('table');
-var header = document.createElement('tr');
-var th1 = document.createElement('th');
-th1.appendChild(document.createTextNode('Row #'));
-header.appendChild(th1);
-for (var j = 0; j < columns; j++) {
-  var th = document.createElement('th');
-  th.appendChild(document.createTextNode('Random Column ' + (j + 1)));
-  header.appendChild(th);
-}
-table.createTHead().appendChild(header);
-var tbody = document.createElement('tbody');
+// Build a random list.
+var rows = 10 + Math.floor(Math.random() * 140);
+var list = document.createElement('ul');
 for (var i = 1; i <= rows; i++) {
-  var row = tbody.insertRow();
-  var th = row.insertCell();
-  th.appendChild(document.createTextNode(i));
-                               
-  for (var j = 0; j < columns; j++) {
-    var td = row.insertCell();
-    td.appendChild(document.createTextNode(Math.floor(Math.random() * 1000000)));
-  }
+  var el = document.createElement('li');
+  el.innerHTML = "Item #" + i;
+  list.appendChild(el);
 }
-table.appendChild(tbody);
-document.body.appendChild(table);
+document.body.appendChild(list);
 
 // Check the URL for a hash of where we left off.
 var options = {};
@@ -86,10 +58,11 @@ if (pageHash) {
 }
 
 // Longtable it.
-longtable(table, options);
+longlist(list, options);
 table.addEventListener('longtable.pageChange', function (e) {
   window.location.hash = 'page' + e.detail.page;
 });
   </script>
 </body>
 </html>
+
