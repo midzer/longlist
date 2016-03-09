@@ -1,4 +1,4 @@
-# longlist 2.0 - A Minimalist JavaScript List Pager
+# longlist 1.0 - A Minimalist JavaScript List Pager
 
 Forked from https://github.com/jekor/longtable and modified for lists.
 Demo at http://www.minjs.com/#longtable
