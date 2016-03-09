@@ -5,7 +5,7 @@ Live-Demo at https://ffmuc.net/
 
 ## Features
 
-* paging
+* paging in unordered (`<ul>`) and ordered (`<ol>`) lists
 * minimal code
 * controls rendered inside the list dynamically (in a `<li>`)
 * no library dependencies
