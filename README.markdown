@@ -50,4 +50,4 @@ yourList.gotoPage(3);
 
 ## Unsupported Browsers
 
-* Internet Explorer <= 8
+* Internet Explorer <= 9
