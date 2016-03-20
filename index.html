@@ -1,0 +1,36 @@
+---
+layout: default
+---
+
+<div class="home">
+
+  <h1 class="page-heading">Posts</h1>
+
+  <ul id="posts" class="post-list">
+    {% for post in site.posts %}
+      <li>
+        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+
+        <h2>
+          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+        </h2>
+      </li>
+    {% endfor %}
+  </ul>
+<script type="text/javascript">
+  longlist(document.getElementById('posts'), {'perPage': 3});
+</script>
+<style type="text/css">
+  .paging-controls {text-align: center;}
+  .paging-controls a {color: green;}
+  .paging-controls a:visited {color: #0069D6;}
+  .paging-controls .prev {float: left;}
+  .paging-controls .prev:before {content: "< prev";}
+  .paging-controls .next {float: right;}
+  .paging-controls .next:after {content: "next >";}
+  .paging-controls .elipsis:before {content: " ... ";}
+</style>
+
+  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
+
+</div>
