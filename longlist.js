@@ -62,7 +62,7 @@
       links.push(link);
     }
 
-    var controls = document.createElement('li');
+    var controls = document.createElement('nav');
     controls.className = 'paging-controls';
     controls.appendChild(prev);
     controls.appendChild(links[0]);

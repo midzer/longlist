@@ -6,7 +6,7 @@ Inspired and forked from https://github.com/jekor/longtable and modified for lis
 
 * paging in unordered `<ul>` and ordered `<ol>` lists
 * minimal code
-* controls rendered inside the list in a `<li>` dynamically
+* controls rendered inside the list in a `<nav>` dynamically
 * no library dependencies
 
 ## How to Use
