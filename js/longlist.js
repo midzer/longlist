@@ -1,4 +1,4 @@
-// longlist 2.0 - a minimalist javascript list pager
+// longlist - a minimalist javascript list pager
 
 // Copyright 2011, 2012, 2013, 2014, 2015 Chris Forno
 // Copyright 2016 Dennis Rohner
@@ -62,7 +62,7 @@
       links.push(link);
     }
 
-    var controls = document.createElement('li');
+    var controls = document.createElement('nav');
     controls.className = 'paging-controls';
     controls.appendChild(prev);
     controls.appendChild(links[0]);
